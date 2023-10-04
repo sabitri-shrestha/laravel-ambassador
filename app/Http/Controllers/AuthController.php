@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateInfoRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +30,7 @@ class AuthController extends Controller
         }
             $user = \Auth::user();
 
-            $jwt = $user->createToken('token')->plainTextToken;
+            $jwt = $user->createToken('token',['admin'])->plainTextToken;
 
             //send via cokkie
             $cookie = cookie('jwt', $jwt, 60*24); //1 day
@@ -38,6 +40,44 @@ class AuthController extends Controller
                 'message'=>'success'
             ])->withCookie($cookie);
 
+
+    }
+
+    public function user(Request $request)
+    {
+        return $request->user();
+    }
+
+    public function logout()
+    {
+        //remove cookie
+        $cookie = \Cookie::forget('jwt');
+
+        return response([
+            'message'=>'success'
+        ])->withCookie($cookie);
+    }
+
+    public function updateInfo(UpdateInfoRequest $request)
+     {
+         $user = $request->user();
+
+         $user->update($request->only('first_name','last_name','email'));
+
+         return response($user, Response::HTTP_ACCEPTED);
+
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $user = $request->user();
+
+        $user->update(
+          [
+              'password'=>\Hash::make($request->input('password'))
+          ]);
+
+        return response($user, Response::HTTP_ACCEPTED);
 
     }
 }
