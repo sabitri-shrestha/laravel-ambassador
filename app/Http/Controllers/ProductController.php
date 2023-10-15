@@ -38,4 +38,24 @@ class ProductController extends Controller
         $product->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+    public function frontend()
+    {
+        if($products = \Cache::get('products_frontend')){
+            return $products;
+        }
+        sleep(2);
+        $products = Product::all();
+        \Cache::set('products_frontend', $products, 30*60); //30 minutes
+
+        return $products;
+    }
+
+    public function backend()
+    {
+        return \Cache::remember('products_backend', 30*60, function(){
+            return Product::paginate();
+        });
+
+    }
 }

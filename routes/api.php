@@ -53,6 +53,9 @@ Route::prefix('admin')->group(function(){
 //ambassador
 Route::prefix('ambassador')->group(function() {
     common('scope.ambassador');
+
+    Route::get('products/frontend',[ProductController::class,'frontend']);
+    Route::get('products/backend',[ProductController::class,'backend']);
 });
 
 //checkout
