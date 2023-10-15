@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Link whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Link whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Link whereUserId($value)
+ * @method static \Database\Factories\LinkFactory factory($count = null, $state = [])
+ * @property-read \App\Models\User $user
  * @mixin \Eloquent
  */
 class Link extends Model
@@ -28,4 +30,9 @@ class Link extends Model
     use HasFactory;
 
     protected $guarded=[];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
