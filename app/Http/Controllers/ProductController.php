@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Barryvdh\Reflection\DocBlock\Type\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
@@ -60,6 +61,29 @@ class ProductController extends Controller
         $products =  \Cache::remember('products_backend', 30*60, fn() => Product::all());
         $total = $products->count();
 
+        if ($s = $request->input('s')){
+            $products = $products
+                ->filter(
+                    fn(Product $product) => Str::contains($product->title, $s) || Str::contains($product->description, $s)
+                );
+        }
+
+        $total = $products->count();
+
+        if($sort = $request->input('sort')){
+            if ($sort === 'asc') {
+                $products = $products->sortBy([
+                    fn($a, $b) => $a['price'] <=> $b['price']
+
+                ]);
+            }else if($sort === 'desc'){
+                $products = $products->sortBy([
+                    fn($a, $b) => $b['price'] <=> $a['price']
+
+                ]);
+            }
+
+        }
         return [
             'data'=> $products->forPage($page, 9)->values(),
             'meta'=>[
