@@ -19,16 +19,16 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-function common(string $scope){
+function common(string $scope)
+{
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
 
-    Route::middleware(['auth:sanctum', $scope])->group(function (){
-        Route::get('user',[AuthController::class,'user']);
-        Route::post('logout',[AuthController::class,'logout']);
-        Route::put('users/info',[AuthController::class,'updateInfo']);
-        Route::put('users/password',[AuthController::class,'updatePassword']);
+    Route::middleware(['auth:sanctum', $scope])->group(function () {
+        Route::get('user', [AuthController::class, 'user']);
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::put('users/info', [AuthController::class, 'updateInfo']);
+        Route::put('users/password', [AuthController::class, 'updatePassword']);
     });
 }
 
