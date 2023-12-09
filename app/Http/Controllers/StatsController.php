@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Link;
+use Illuminate\Support\Facades\Redis;
 
 class StatsController extends Controller
 {
@@ -23,5 +25,9 @@ class StatsController extends Controller
             ];
         });
 
+    }
+    public function rankings()
+    {
+        return Redis::zrevrange('rankings', 0, -1, 'WITHSCORES');
     }
 }
