@@ -3,9 +3,7 @@
 
 Try to interact locally with the frontend:
 
-[Admin](https://github.com/devkiloton/vue-admin) (don't forget to setup `VUE_APP_API_URL` in the `.env`)
-
-[Checkout](https://github.com/devkiloton/nuxt-checkout) (use a `code` from any link in the db as a route param to make the checkout and set Stripe credentials in the config)
+[Admin](https://github.com/sabitri-shrestha/vue-admin) (don't forget to setup `VUE_APP_API_URL` in the `.env`)
 
 ### Running the project
 First things first, setup the environment variables, the `.env.example` is equal to the `.env` excepting the Stripe credentials that you must to create and the `MAIL_HOST` variable that you must to define based on you local machine (default is `docker.for.mac.localhost`).
